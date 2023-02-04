@@ -1,4 +1,4 @@
-package ua.goit.jdbc;
+package ua.goit.preparedstatement;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
