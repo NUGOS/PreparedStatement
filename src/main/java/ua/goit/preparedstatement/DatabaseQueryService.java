@@ -12,15 +12,18 @@ import java.util.Objects;
 public class DatabaseQueryService {
 
     private final Database database = new Database();
+
     public static void main(String[] args) throws SQLException, IOException {
         List<MaxProjectCountClient> maxProjectCountClients = new DatabaseQueryService().findMaxProjectsClient();
-        System.out.println("\u001B[33m"+maxProjectCountClients+"\u001B[34m");
-        List<MaxSalaryWorker> maxSalaryWorkers = new  DatabaseQueryService().findMaxSalaryWorker();
-        System.out.println(maxSalaryWorkers+"\u001B[31m");
+        System.out.println("\u001B[33m" + maxProjectCountClients + "\u001B[34m");
+        List<MaxSalaryWorker> maxSalaryWorkers = new DatabaseQueryService().findMaxSalaryWorker();
+        System.out.println(maxSalaryWorkers + "\u001B[31m");
         List<YoungEldestWorker> yongEldestWorker = new DatabaseQueryService().findYongEldestWorker();
-        System.out.println(yongEldestWorker+"\u001B[32m");
+        System.out.println(yongEldestWorker + "\u001B[32m");
         List<LongestProject> longestProject = new DatabaseQueryService().findLongestProject();
-        System.out.println(longestProject+"\u001B[0m");
+        System.out.println(longestProject + "\u001B[36m");
+        List<PrintProjectPrice> printProjectPrices = new DatabaseQueryService().printProjectPrice();
+        System.out.println(printProjectPrices + "\u001B[0m");
     }
 
     public List<MaxProjectCountClient> findMaxProjectsClient() throws SQLException, IOException {
@@ -43,6 +46,7 @@ public class DatabaseQueryService {
         }
         return maxProjectCountClients;
     }
+
     public List<MaxSalaryWorker> findMaxSalaryWorker() throws IOException, SQLException {
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
@@ -63,6 +67,7 @@ public class DatabaseQueryService {
         }
         return maxSalaryWorkers;
     }
+
     public List<YoungEldestWorker> findYongEldestWorker() throws IOException, SQLException {
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
@@ -84,6 +89,7 @@ public class DatabaseQueryService {
         }
         return youngEldestWorkers;
     }
+
     public List<LongestProject> findLongestProject() throws IOException, SQLException {
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
@@ -105,6 +111,27 @@ public class DatabaseQueryService {
         return longestProjects;
     }
 
+    public List<PrintProjectPrice> printProjectPrice() throws IOException, SQLException {
+        String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
+                        .getClassLoader()
+                        .getResource("sql/print_project_prices.sql"))
+                .getPath();
+        String sql = readSQLFile(sqlFilePath);
+
+        Connection connection = database.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List<PrintProjectPrice> printProjectPrices = new ArrayList<>();
+        while (resultSet.next()) {
+            PrintProjectPrice printProjectPrice = new PrintProjectPrice();
+            printProjectPrice.setName(resultSet.getString("NAME"));
+            printProjectPrice.setPrice(resultSet.getInt("PRICE"));
+            printProjectPrices.add(printProjectPrice);
+        }
+        return printProjectPrices;
+    }
+
     private static String readSQLFile(String filePath) throws IOException {
         StringBuilder sql = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -116,9 +143,9 @@ public class DatabaseQueryService {
         return sql.toString();
     }
 
-    public static  class  MaxSalaryWorker{
+    public static class MaxSalaryWorker {
         private String name;
-        private  int salary;
+        private int salary;
 
         public String getName() {
             return name;
@@ -144,6 +171,7 @@ public class DatabaseQueryService {
                     '}';
         }
     }
+
     public static class MaxProjectCountClient {
         private String name;
         private int projectCount;
@@ -172,7 +200,8 @@ public class DatabaseQueryService {
                     '}';
         }
     }
-    public static class YoungEldestWorker{
+
+    public static class YoungEldestWorker {
         private String type;
         private String name;
         private Date birthday;
@@ -210,7 +239,8 @@ public class DatabaseQueryService {
                     '}';
         }
     }
-    public static class LongestProject{
+
+    public static class LongestProject {
         private String name;
         private int monthCount;
 
@@ -235,6 +265,34 @@ public class DatabaseQueryService {
             return "LongestProject{" +
                     "name='" + name + '\'' +
                     ", monthCount=" + monthCount +
+                    '}';
+        }
+    }
+    public static class PrintProjectPrice{
+        private String name;
+        private int price;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        @Override
+        public String toString() {
+            return "PrintProjectPrices{" +
+                    "name='" + name + '\'' +
+                    ", price=" + price +
                     '}';
         }
     }
