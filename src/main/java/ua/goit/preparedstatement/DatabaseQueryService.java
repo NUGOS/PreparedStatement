@@ -13,121 +13,124 @@ public class DatabaseQueryService {
 
     private final Database database = new Database();
 
-    public static void main(String[] args) throws SQLException, IOException {
-        List<MaxProjectCountClient> maxProjectCountClients = new DatabaseQueryService().findMaxProjectsClient();
-        System.out.println("\u001B[33m" + maxProjectCountClients + "\u001B[34m");
-        List<MaxSalaryWorker> maxSalaryWorkers = new DatabaseQueryService().findMaxSalaryWorker();
-        System.out.println(maxSalaryWorkers + "\u001B[31m");
-        List<YoungEldestWorker> yongEldestWorker = new DatabaseQueryService().findYongEldestWorker();
-        System.out.println(yongEldestWorker + "\u001B[32m");
-        List<LongestProject> longestProject = new DatabaseQueryService().findLongestProject();
-        System.out.println(longestProject + "\u001B[36m");
-        List<PrintProjectPrice> printProjectPrices = new DatabaseQueryService().printProjectPrice();
-        System.out.println(printProjectPrices + "\u001B[0m");
-    }
-
     public List<MaxProjectCountClient> findMaxProjectsClient() throws SQLException, IOException {
+        List<MaxProjectCountClient> maxProjectCountClients = new ArrayList<>();
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
                         .getResource("sql/find_max_projects_client.sql"))
                 .getPath();
         String sql = readSQLFile(sqlFilePath);
-
-        Connection connection = database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<MaxProjectCountClient> maxProjectCountClients = new ArrayList<>();
-        while (resultSet.next()) {
-            MaxProjectCountClient maxProjectCountClient = new MaxProjectCountClient();
-            maxProjectCountClient.setName(resultSet.getString("NAME"));
-            maxProjectCountClient.setProjectCount(resultSet.getInt("PROJECT_COUNT"));
-            maxProjectCountClients.add(maxProjectCountClient);
+        try (
+                Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                MaxProjectCountClient maxProjectCountClient = new MaxProjectCountClient();
+                maxProjectCountClient.setName(resultSet.getString("NAME"));
+                maxProjectCountClient.setProjectCount(resultSet.getInt("PROJECT_COUNT"));
+                maxProjectCountClients.add(maxProjectCountClient);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return maxProjectCountClients;
     }
 
     public List<MaxSalaryWorker> findMaxSalaryWorker() throws IOException, SQLException {
+        List<MaxSalaryWorker> maxSalaryWorkers = new ArrayList<>();
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
                         .getResource("sql/find_max_salary_worker.sql"))
                 .getPath();
         String sql = readSQLFile(sqlFilePath);
 
-        Connection connection = database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<MaxSalaryWorker> maxSalaryWorkers = new ArrayList<>();
-        while (resultSet.next()) {
-            MaxSalaryWorker maxSalaryWorker = new MaxSalaryWorker();
-            maxSalaryWorker.setName(resultSet.getString("NAME"));
-            maxSalaryWorker.setSalary(resultSet.getInt("SALARY"));
-            maxSalaryWorkers.add(maxSalaryWorker);
+        try (
+                Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                MaxSalaryWorker maxSalaryWorker = new MaxSalaryWorker();
+                maxSalaryWorker.setName(resultSet.getString("NAME"));
+                maxSalaryWorker.setSalary(resultSet.getInt("SALARY"));
+                maxSalaryWorkers.add(maxSalaryWorker);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return maxSalaryWorkers;
     }
 
     public List<YoungEldestWorker> findYongEldestWorker() throws IOException, SQLException {
+        List<YoungEldestWorker> youngEldestWorkers = new ArrayList<>();
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
                         .getResource("sql/find_youngest_eldest_workers.sql"))
                 .getPath();
         String sql = readSQLFile(sqlFilePath);
-
-        Connection connection = database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<YoungEldestWorker> youngEldestWorkers = new ArrayList<>();
-        while (resultSet.next()) {
-            YoungEldestWorker youngEldestWorker = new YoungEldestWorker();
-            youngEldestWorker.setType(resultSet.getString("TYPE"));
-            youngEldestWorker.setName(resultSet.getString("NAME"));
-            youngEldestWorker.setBirthday(resultSet.getDate("BIRTHDAY"));
-            youngEldestWorkers.add(youngEldestWorker);
+        try (
+                Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                YoungEldestWorker youngEldestWorker = new YoungEldestWorker();
+                youngEldestWorker.setType(resultSet.getString("TYPE"));
+                youngEldestWorker.setName(resultSet.getString("NAME"));
+                youngEldestWorker.setBirthday(resultSet.getDate("BIRTHDAY"));
+                youngEldestWorkers.add(youngEldestWorker);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return youngEldestWorkers;
     }
 
     public List<LongestProject> findLongestProject() throws IOException, SQLException {
+        List<LongestProject> longestProjects = new ArrayList<>();
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
                         .getResource("sql/find_longest_project.sql"))
                 .getPath();
         String sql = readSQLFile(sqlFilePath);
-
-        Connection connection = database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<LongestProject> longestProjects = new ArrayList<>();
-        while (resultSet.next()) {
-            LongestProject longestProject = new LongestProject();
-            longestProject.setName(resultSet.getString("NAME"));
-            longestProject.setMonthCount(resultSet.getInt("MONTH_COUNT"));
-            longestProjects.add(longestProject);
+        try (
+                Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                LongestProject longestProject = new LongestProject();
+                longestProject.setName(resultSet.getString("NAME"));
+                longestProject.setMonthCount(resultSet.getInt("MONTH_COUNT"));
+                longestProjects.add(longestProject);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return longestProjects;
     }
 
     public List<PrintProjectPrice> printProjectPrice() throws IOException, SQLException {
+        List<PrintProjectPrice> printProjectPrices = new ArrayList<>();
         String sqlFilePath = Objects.requireNonNull(DatabaseQueryService.class
                         .getClassLoader()
                         .getResource("sql/print_project_prices.sql"))
                 .getPath();
         String sql = readSQLFile(sqlFilePath);
-
-        Connection connection = database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<PrintProjectPrice> printProjectPrices = new ArrayList<>();
-        while (resultSet.next()) {
-            PrintProjectPrice printProjectPrice = new PrintProjectPrice();
-            printProjectPrice.setName(resultSet.getString("NAME"));
-            printProjectPrice.setPrice(resultSet.getInt("PRICE"));
-            printProjectPrices.add(printProjectPrice);
+        try (
+                Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
+            while (resultSet.next()) {
+                PrintProjectPrice printProjectPrice = new PrintProjectPrice();
+                printProjectPrice.setName(resultSet.getString("NAME"));
+                printProjectPrice.setPrice(resultSet.getInt("PRICE"));
+                printProjectPrices.add(printProjectPrice);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return printProjectPrices;
     }
@@ -268,7 +271,8 @@ public class DatabaseQueryService {
                     '}';
         }
     }
-    public static class PrintProjectPrice{
+
+    public static class PrintProjectPrice {
         private String name;
         private int price;
 
