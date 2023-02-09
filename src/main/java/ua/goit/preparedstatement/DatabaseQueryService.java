@@ -1,11 +1,12 @@
 package ua.goit.preparedstatement;
 
+import ua.goit.preparedstatement.model.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,158 +147,4 @@ public class DatabaseQueryService {
         return sql.toString();
     }
 
-    public static class MaxSalaryWorker {
-        private String name;
-        private int salary;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getSalary() {
-            return salary;
-        }
-
-        public void setSalary(int salary) {
-            this.salary = salary;
-        }
-
-        @Override
-        public String toString() {
-            return "MaxSalaryWorker{" +
-                    "name='" + name + '\'' +
-                    ", salary=" + salary +
-                    '}';
-        }
-    }
-
-    public static class MaxProjectCountClient {
-        private String name;
-        private int projectCount;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getProjectCount() {
-            return projectCount;
-        }
-
-        public void setProjectCount(int projectCount) {
-            this.projectCount = projectCount;
-        }
-
-        @Override
-        public String toString() {
-            return "MaxProjectCountClient{" +
-                    "name='" + name + '\'' +
-                    ", projectCount=" + projectCount +
-                    '}';
-        }
-    }
-
-    public static class YoungEldestWorker {
-        private String type;
-        private String name;
-        private Date birthday;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Date getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(Date birthday) {
-            this.birthday = birthday;
-        }
-
-        @Override
-        public String toString() {
-            return "YoungEldestWorker{" +
-                    "type='" + type + '\'' +
-                    ", name='" + name + '\'' +
-                    ", birthday=" + birthday +
-                    '}';
-        }
-    }
-
-    public static class LongestProject {
-        private String name;
-        private int monthCount;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getMonthCount() {
-            return monthCount;
-        }
-
-        public void setMonthCount(int monthCount) {
-            this.monthCount = monthCount;
-        }
-
-        @Override
-        public String toString() {
-            return "LongestProject{" +
-                    "name='" + name + '\'' +
-                    ", monthCount=" + monthCount +
-                    '}';
-        }
-    }
-
-    public static class PrintProjectPrice {
-        private String name;
-        private int price;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getPrice() {
-            return price;
-        }
-
-        public void setPrice(int price) {
-            this.price = price;
-        }
-
-        @Override
-        public String toString() {
-            return "PrintProjectPrices{" +
-                    "name='" + name + '\'' +
-                    ", price=" + price +
-                    '}';
-        }
-    }
 }

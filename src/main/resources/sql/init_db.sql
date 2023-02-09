@@ -17,3 +17,9 @@ CREATE TABLE project (
   START_DATE date NOT NULL,
   END_DATE date NOT NULL CHECK (END_DATE >= START_DATE)
 );
+
+CREATE TABLE worker_project (
+ID serial PRIMARY KEY,
+WORKER_ID integer REFERENCES worker(ID),
+PROJECT_ID integer REFERENCES project(ID)
+);
